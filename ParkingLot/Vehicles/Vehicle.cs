@@ -15,7 +15,7 @@ namespace ParkingDeluxe.Vehicles
 
         public int Size { get; protected set; }
         public DateTime ParkingTime { get; protected set; }
-        public string ParkingInterval { get; protected set; }
+        public string ParkingInterval { get; set; }
 
         protected Vehicle(string parkingInteval) {
             ParkingInterval = parkingInteval;
