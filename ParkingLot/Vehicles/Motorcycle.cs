@@ -10,6 +10,7 @@ namespace ParkingDeluxe.Vehicles
         internal string Brand { get; }
         internal Motorcycle(string parkingInterval) : base(parkingInterval) {
             Brand = GenerateBrand();
+            Size = 1;
         }
         public Motorcycle() {
             Brand = GenerateBrand();

@@ -9,6 +9,7 @@ namespace ParkingDeluxe.Vehicles
     internal class Car : Vehicle {
         internal bool IsElectric { get; set; }
         internal Car(string parkingInterval) : base(parkingInterval) {
+            Size = 2;
         }
         public Car() {
             IsElectric = Random.Next()%2 == 0;

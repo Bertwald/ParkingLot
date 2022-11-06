@@ -14,6 +14,13 @@ namespace ParkingDeluxe {
             Console.WriteLine(bus1);
 
             //Create objects
+            ParkingGarage parkingGarage = new(15);
+            parkingGarage.Park(motorcycle1);
+            parkingGarage.Park(car);
+            parkingGarage.Park(bus1);
+            parkingGarage.Park(motorcycle2);
+
+            parkingGarage.ListParkedCars();
 
             //Start Main loop
 

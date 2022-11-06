@@ -10,6 +10,7 @@ namespace ParkingDeluxe.Vehicles
         internal int PassengerCapacity { get; private set; }
         internal Bus(string parkingInterval) : base(parkingInterval) {
             PassengerCapacity = GeneratePassengerCapacity();
+            Size = 4;
         }
         public Bus() {
             PassengerCapacity = GeneratePassengerCapacity();
