@@ -12,6 +12,11 @@ namespace ParkingDeluxe {
             Console.WriteLine(motorcycle1);
             Console.WriteLine(motorcycle2);
             Console.WriteLine(bus1);
+
+            //Create objects
+
+            //Start Main loop
+
         }
     }
 }

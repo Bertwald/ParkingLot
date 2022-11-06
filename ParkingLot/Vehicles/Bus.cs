@@ -11,6 +11,10 @@ namespace ParkingDeluxe.Vehicles
         internal Bus(string parkingInterval) : base(parkingInterval) {
             PassengerCapacity = GeneratePassengerCapacity();
         }
+        public Bus() {
+            PassengerCapacity = GeneratePassengerCapacity();
+            Size = 4;
+        }
 
         private int GeneratePassengerCapacity() {
             return 5 * Random.Next(10, 21);

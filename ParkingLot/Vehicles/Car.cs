@@ -10,6 +10,10 @@ namespace ParkingDeluxe.Vehicles
         internal bool IsElectric { get; set; }
         internal Car(string parkingInterval) : base(parkingInterval) {
         }
+        public Car() {
+            IsElectric = Random.Next()%2 == 0;
+            Size = 2;
+        }
 
         public override string ToString() {
             // Ex Output: Plats 1 Bil ABC123 Röd Elbil

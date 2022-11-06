@@ -11,6 +11,10 @@ namespace ParkingDeluxe.Vehicles
         internal Motorcycle(string parkingInterval) : base(parkingInterval) {
             Brand = GenerateBrand();
         }
+        public Motorcycle() {
+            Brand = GenerateBrand();
+            Size = 1;
+        }
 
         private static string GenerateBrand() {
             string[] brands = {"Harley", "Yamaha", "Honda", "Kawasaki" };

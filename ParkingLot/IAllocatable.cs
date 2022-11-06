@@ -6,5 +6,8 @@ using System.Threading.Tasks;
 
 namespace ParkingDeluxe {
     internal interface IAllocatable {
+        int Capacity { get; }
+
+
     }
 }

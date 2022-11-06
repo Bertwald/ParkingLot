@@ -22,13 +22,17 @@ namespace ParkingDeluxe.Vehicles
             Color = GenerateColor();
             LicenseNumber = GenerateLicenseNumer();
         }
+        public Vehicle() {
+            ParkingInterval = "Unparked";
+            Color = GenerateColor();
+            LicenseNumber = GenerateLicenseNumer();
+        }
         private static string GenerateLicenseNumer() {
-            char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
-            string ret = "";
-            return ret + (chars[Random.Next(chars.Length)] + chars[Random.Next(chars.Length)] + chars[Random.Next(chars.Length)]);
+            return new string(Enumerable.Range(1, 3).Select(_ => (char)(Random.Next(65,91))).ToArray()) + 
+                   new string(Enumerable.Range(1, 3).Select(_ => (char)Random.Next(48,58)).ToArray());
         }
         private static string GenerateColor() {
-            string[] colors = { "Röd", "Svart", "Gul", "Blå", "Vit", "Metallic", "Grön", "Rosa" };
+            string[] colors = { "Röd", "Svart", "Gul", "Blå", "Vit", "Grå", "Grön", "Rosa" };
             return colors[Random.Next(colors.Length)];
         }
 
