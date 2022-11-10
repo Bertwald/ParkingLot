@@ -9,20 +9,26 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ParkingDeluxe {
+    internal enum InputMode {
+        Manual,
+        Automatic,
+    }
     internal class ParkingGarage {
-        private static readonly double parkingFee = 1.50D;
+        private static readonly double _parkingFee = 1.50D;
+        private static readonly bool _sizeBasedFee = false;
         //private static readonly int _maxVehicleSize = 4;
         //private ParkingSlot[] _parkingSlots;
         private int _numberOfSlots;
         private bool[] _isIndexOccupied;
-        private Dictionary<Vehicle, int> parkedVehicles;
-        internal ParkingQueue queue;
+        private Dictionary<Vehicle, int> _parkedVehicles;
+        private ParkingQueue _queue;
+        internal InputMode InputMode { get; set; }
 
-        internal ParkingGarage(int slots) {
+        internal ParkingGarage(int slots, ParkingQueue queue) {
             this._numberOfSlots = slots;
             _isIndexOccupied = new bool[_numberOfSlots*2];
-            parkedVehicles = new Dictionary<Vehicle, int>();
-            queue = new();
+            _parkedVehicles = new Dictionary<Vehicle, int>();
+            _queue = queue;   
         }
         //Not working as intended. very much not so
         //internal bool CanPark(int size) {
@@ -52,7 +58,7 @@ namespace ParkingDeluxe {
                         skipOne = false;
                         continue;
                     }
-                    parkedVehicles.Add(vehicle, i);
+                    _parkedVehicles.Add(vehicle, i);
                     vehicle.StartPark();
                     vehicle.ParkingInterval = vehicle.Size <= 2 ? (i >> 1).ToString() : (i >> 1) + "-" + ((i + vehicle.Size) >> 1).ToString();
                     for (int j = 0; j < vehicle.Size; j++) {
@@ -65,25 +71,22 @@ namespace ParkingDeluxe {
         }
         internal double UnPark(Vehicle vehicle) {
             //Unblock parking lot
-            int startindex = parkedVehicles[vehicle];
+            int startindex = _parkedVehicles[vehicle];
             for(int i = 0; i < vehicle.Size; i++) {
                 _isIndexOccupied[startindex + i] = false;
             }
-            parkedVehicles.Remove(vehicle);
-            return vehicle.GetParkedTime() * parkingFee;
+            _parkedVehicles.Remove(vehicle);
+            return _sizeBasedFee ? vehicle.GetParkedTime() * _parkingFee * vehicle.Size / 2 : vehicle.GetParkedTime() * _parkingFee;
         }
 
         internal void ListParkedCars() {
-            var vehicles = from data in parkedVehicles
+            var vehicles = from data in _parkedVehicles
                            orderby data.Value
                            select data.Key;
-            foreach (var vehicle in vehicles) {
-                Console.WriteLine(vehicle.ToString());
-            }
-
+            UI.PrintParking<Vehicle>(vehicles);
         }
 
-        internal void Run() {
+        internal void Update() {
 
         }
     }

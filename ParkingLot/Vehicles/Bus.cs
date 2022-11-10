@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ParkingDeluxe.Vehicles
 {
     internal class Bus : Vehicle {
-        internal int PassengerCapacity { get; private set; }
+        internal int PassengerCapacity { get; set; }
         internal Bus(string parkingInterval) : base(parkingInterval) {
             PassengerCapacity = GeneratePassengerCapacity();
             Size = 4;

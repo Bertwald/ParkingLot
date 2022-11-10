@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace ParkingDeluxe.Vehicles
 {
     internal class Motorcycle : Vehicle {
-        internal string Brand { get; }
+        internal string Brand { get; set; }
+        internal static readonly string[] brands = { "Harley", "Yamaha", "Honda", "Kawasaki" };
         internal Motorcycle(string parkingInterval) : base(parkingInterval) {
             Brand = GenerateBrand();
             Size = 1;
@@ -18,7 +19,6 @@ namespace ParkingDeluxe.Vehicles
         }
 
         private static string GenerateBrand() {
-            string[] brands = {"Harley", "Yamaha", "Honda", "Kawasaki" };
             return brands[Random.Next(brands.Length)];
         }
 

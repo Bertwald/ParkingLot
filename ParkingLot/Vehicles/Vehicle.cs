@@ -8,10 +8,11 @@ namespace ParkingDeluxe.Vehicles
 {
     internal class Vehicle : IParkable
     {
+        internal static readonly string[] colors = { "Röd", "Svart", "Gul", "Blå", "Vit", "Grå", "Grön", "Rosa" };
         // Used by all Randomfunctions in all subclasses
         protected static Random Random = new Random();
         public string LicenseNumber { get; }
-        public string Color { get; }
+        public string Color { get; set; }
 
         public int Size { get; protected set; }
         public DateTime ParkingTime { get; protected set; }
@@ -32,7 +33,6 @@ namespace ParkingDeluxe.Vehicles
                    new string(Enumerable.Range(1, 3).Select(_ => (char)Random.Next(48,58)).ToArray());
         }
         private static string GenerateColor() {
-            string[] colors = { "Röd", "Svart", "Gul", "Blå", "Vit", "Grå", "Grön", "Rosa" };
             return colors[Random.Next(colors.Length)];
         }
 
