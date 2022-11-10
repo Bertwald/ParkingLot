@@ -9,7 +9,6 @@
                 }
             }
         }
-
         internal static int GetInt() {
             while (true) {
                 string? read = Console.ReadLine();
@@ -18,7 +17,6 @@
                 }
             }
         }
-
         internal static bool GetBool() {
             while (true) {
                 string? read = Console.ReadLine();
@@ -27,7 +25,6 @@
                 }
             }
         }
-
         internal static int GetIntInRange(int lower, int upper) {
             int number = int.MaxValue;
             while (number < lower || number > upper) {
@@ -35,13 +32,16 @@
             }
             return number;
         }
-
-        internal static string GetBrand() {
-            throw new NotImplementedException();
+        internal static Command GetCommand() {
+            ConsoleKey key = Console.ReadKey(true).Key;
+            return KeyToCommand(key);
         }
-
-        internal static string GetColor() {
-            throw new NotImplementedException();
-        }
+        internal static Command KeyToCommand(ConsoleKey key) => key switch {
+            ConsoleKey.P => Command.Park,
+            ConsoleKey.U => Command.Unpark,
+            ConsoleKey.Q => Command.Quit,
+            ConsoleKey.A => Command.ToggleInput,
+            _ => Command.DoNothing,
+        };
     }
 }

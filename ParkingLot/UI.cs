@@ -30,6 +30,8 @@ namespace ParkingDeluxe {
 
         private static Vehicle SetBusFromInput(Bus input) {
             SetVehicleColorFromInput(input);
+            Console.WriteLine();
+            Console.WriteLine("Give passengerCapacity in range 50-100");
             input.PassengerCapacity = InputModule.GetIntInRange(50, 100);
             return input;
         }
@@ -58,7 +60,8 @@ namespace ParkingDeluxe {
             Console.WriteLine("====");
             Console.WriteLine("P: Park a vehicle");
             Console.WriteLine("U: Unpark a vehicle");
-            Console.WriteLine("Q: Avsluta");
+            Console.WriteLine("A : Toggle manual vehicle Info");
+            Console.WriteLine("Q: Quit");
         }
         private static void PrintColorOptions() {
             Console.WriteLine("ColorOptions");
@@ -74,6 +77,22 @@ namespace ParkingDeluxe {
                 Console.WriteLine($"{option}: {Motorcycle.brands[option]}");
             }
         }
+        private static void MessageDelay() {
+            Thread.Sleep(2000);
+        }
 
+        internal static void PrintUnParkingError(string msg) {
+            Console.WriteLine("Could not perform the desired Unparking action due to: " + msg);
+            MessageDelay();
+        }
+
+        internal static void PrintUnParkingInfo(Vehicle vehicle, double cost) {
+            Console.WriteLine($"{vehicle.LicenseNumber} is no longer parked, the cost of said parking was {cost} kr");
+            MessageDelay();
+        }
+
+        internal static void ShowUnparkingInstruction() {
+            Console.WriteLine($"Give a licensenumber (format XXXNNN)");
+        }
     }
 }
