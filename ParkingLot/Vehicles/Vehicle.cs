@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ParkingDeluxe.Interfaces;
 
 namespace ParkingDeluxe.Vehicles
 {
@@ -10,10 +7,9 @@ namespace ParkingDeluxe.Vehicles
     {
         internal static readonly string[] colors = { "Röd", "Svart", "Gul", "Blå", "Vit", "Grå", "Grön", "Rosa" };
         // Used by all Randomfunctions in all subclasses
-        protected static Random Random = new Random();
+        protected static Random Random = new();
         public string LicenseNumber { get; }
-        public string Color { get; set; }
-
+        internal string Color { get; set; }
         public int Size { get; protected set; }
         public DateTime ParkingTime { get; protected set; }
         public string ParkingInterval { get; set; }
@@ -23,7 +19,7 @@ namespace ParkingDeluxe.Vehicles
             Color = GenerateColor();
             LicenseNumber = GenerateLicenseNumer();
         }
-        public Vehicle() {
+        internal Vehicle() {
             ParkingInterval = "Unparked";
             Color = GenerateColor();
             LicenseNumber = GenerateLicenseNumer();

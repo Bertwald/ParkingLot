@@ -7,9 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="GUI\" />
-    <Folder Include="Logic\" />
-  </ItemGroup>
-
 </Project>

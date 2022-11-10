@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace ParkingDeluxe.Vehicles
 {
     internal class Motorcycle : Vehicle {
         internal string Brand { get; set; }
         internal static readonly string[] brands = { "Harley", "Yamaha", "Honda", "Kawasaki" };
-        internal Motorcycle(string parkingInterval) : base(parkingInterval) {
-            Brand = GenerateBrand();
-            Size = 1;
-        }
-        public Motorcycle() {
+        internal Motorcycle() {
             Brand = GenerateBrand();
             Size = 1;
         }
