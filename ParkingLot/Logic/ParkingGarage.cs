@@ -38,7 +38,7 @@ namespace ParkingDeluxe.Logic
         }
         internal bool Park(Vehicle vehicle)
         {
-            bool skipOne = false;
+            bool isOccupied = false;
             for (int i = 0; i < _isIndexOccupied.Length; i += vehicle.Size)
             {
                 if (!_isIndexOccupied[i] && i + vehicle.Size <= _isIndexOccupied.Length)
@@ -47,13 +47,13 @@ namespace ParkingDeluxe.Logic
                     {
                         if (_isIndexOccupied[i + j] == true)
                         {
-                            skipOne = true;
-                            continue;
+                            isOccupied = true;
+                            break;
                         }
                     }
-                    if (skipOne == true)
+                    if (isOccupied == true)
                     {
-                        skipOne = false;
+                        isOccupied = false;
                         continue;
                     }
                     _parkedVehicles.Add(vehicle, i);
@@ -88,7 +88,7 @@ namespace ParkingDeluxe.Logic
             UI.PrintParking<Vehicle>(vehicles);
         }
 
-        internal void RunMainLoop()
+        internal void Run()
         {
             bool continueRunning;
             do

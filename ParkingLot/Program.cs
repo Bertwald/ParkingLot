@@ -6,7 +6,7 @@ namespace ParkingDeluxe
         static void Main(string[] args) {
             Console.CursorVisible = false;
             ParkingGarage parkingGarage = new(15, new ParkingQueue());
-            parkingGarage.RunMainLoop();
+            parkingGarage.Run();
         }
     }
 }
