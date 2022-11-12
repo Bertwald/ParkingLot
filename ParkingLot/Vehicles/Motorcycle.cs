@@ -1,16 +1,15 @@
 ﻿
-namespace ParkingDeluxe.Vehicles
-{
+namespace ParkingDeluxe.Vehicles {
     internal class Motorcycle : Vehicle {
         internal string Brand { get; set; }
-        internal static readonly string[] brands = { "Harley", "Yamaha", "Honda", "Kawasaki" };
+        internal static readonly string[] s_brands = { "Harley", "Yamaha", "Honda", "Kawasaki" };
         internal Motorcycle() {
             Brand = GenerateBrand();
             Size = 1;
         }
 
         private static string GenerateBrand() {
-            return brands[Random.Next(brands.Length)];
+            return s_brands[s_random.Next(s_brands.Length)];
         }
 
         public override string ToString() {

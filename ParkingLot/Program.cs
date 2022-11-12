@@ -1,7 +1,6 @@
 ﻿using ParkingDeluxe.Logic;
 
-namespace ParkingDeluxe
-{
+namespace ParkingDeluxe {
     internal class Program {
         static void Main(string[] args) {
             Console.CursorVisible = false;

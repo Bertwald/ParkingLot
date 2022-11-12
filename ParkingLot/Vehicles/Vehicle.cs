@@ -1,13 +1,11 @@
 ﻿
 using ParkingDeluxe.Interfaces;
 
-namespace ParkingDeluxe.Vehicles
-{
-    internal class Vehicle : IParkable
-    {
-        internal static readonly string[] colors = { "Röd", "Svart", "Gul", "Blå", "Vit", "Grå", "Grön", "Rosa" };
+namespace ParkingDeluxe.Vehicles {
+    internal class Vehicle : IParkable {
+        internal static readonly string[] s_colors = { "Röd", "Svart", "Gul", "Blå", "Vit", "Grå", "Grön", "Rosa" };
         // Used by all Randomfunctions in all subclasses
-        protected static Random Random = new();
+        protected static Random s_random = new();
         public string LicenseNumber { get; }
         internal string Color { get; set; }
         public int Size { get; protected set; }
@@ -25,11 +23,11 @@ namespace ParkingDeluxe.Vehicles
             LicenseNumber = GenerateLicenseNumer();
         }
         private static string GenerateLicenseNumer() {
-            return new string(Enumerable.Range(1, 3).Select(_ => (char)(Random.Next(65,91))).ToArray()) + 
-                   new string(Enumerable.Range(1, 3).Select(_ => (char)Random.Next(48,58)).ToArray());
+            return new string(Enumerable.Range(1, 3).Select(_ => (char)(s_random.Next(65, 91))).ToArray()) +
+                   new string(Enumerable.Range(1, 3).Select(_ => (char)s_random.Next(48, 58)).ToArray());
         }
         private static string GenerateColor() {
-            return colors[Random.Next(colors.Length)];
+            return s_colors[s_random.Next(s_colors.Length)];
         }
 
         public void StartPark() {

@@ -1,10 +1,9 @@
 ﻿
-namespace ParkingDeluxe.Vehicles
-{
+namespace ParkingDeluxe.Vehicles {
     internal class Car : Vehicle {
         internal bool IsElectric { get; set; }
         internal Car() {
-            IsElectric = Random.Next()%2 == 0;
+            IsElectric = s_random.Next() % 2 == 0;
             Size = 2;
         }
 

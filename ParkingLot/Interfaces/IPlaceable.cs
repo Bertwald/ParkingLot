@@ -1,7 +1,5 @@
-﻿namespace ParkingDeluxe.Interfaces
-{
-    internal interface IPlaceable
-    {
+﻿namespace ParkingDeluxe.Interfaces {
+    internal interface IPlaceable {
         internal int Size { get; }
     }
 }
