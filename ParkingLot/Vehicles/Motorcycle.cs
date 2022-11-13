@@ -14,7 +14,7 @@ namespace ParkingDeluxe.Vehicles {
 
         public override string ToString() {
             // Ex Output: Plats 2 MC GHJ456 Svart Harley
-            return $"Plats {ParkingInterval} \tMC\t {LicenseNumber} \t {Color} \t {Brand}";
+            return $"Plats {ParkedInInterval} \tMC\t {LicenseNumber} \t {Color} \t {Brand}   \t| Tid Parkerad: {TimeOfParking}";
         }
     }
 }

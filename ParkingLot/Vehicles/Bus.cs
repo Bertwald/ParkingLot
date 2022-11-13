@@ -11,7 +11,7 @@ namespace ParkingDeluxe.Vehicles {
         }
         public override string ToString() {
             // Ex Output: Plats 3-4 Buss LKJ223 Gul 55
-            return $"Plats {ParkingInterval} \tBuss\t {LicenseNumber} \t {Color} \t {PassengerCapacity}";
+            return $"Plats {ParkedInInterval} \tBuss\t {LicenseNumber} \t {Color} \t {PassengerCapacity}   \t\t| Tid Parkerad: {TimeOfParking}";
         }
     }
 }

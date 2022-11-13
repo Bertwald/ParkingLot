@@ -10,9 +10,15 @@ namespace ParkingDeluxe.UserInterface {
                 }
             }
         }
-        internal static void ShowMenu() {
-            Console.SetCursorPosition(0, 18);
+        internal static void ShowMenu(int row) {
+            Console.SetCursorPosition(0, row);
             PrintMenuOptions();
+        }
+        internal static void FullParkingNotification(int row) {
+            Console.SetCursorPosition(0, row);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("[PARKERINGEN FULL]");
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
         internal static Vehicle SetVehicleFromInput(Vehicle input) => input switch {
             //  Here we know    |    
@@ -25,7 +31,7 @@ namespace ParkingDeluxe.UserInterface {
         private static Vehicle SetBusFromInput(Bus input) {
             SetVehicleColorFromInput(input);
             Console.WriteLine();
-            Console.WriteLine("Give passenger capacity in range 50-100");
+            Console.WriteLine("Ange antal passagerare (50-100) följt av ENTER");
             input.PassengerCapacity = InputModule.GetIntInRange(50, 100);
             return input;
         }
@@ -37,7 +43,7 @@ namespace ParkingDeluxe.UserInterface {
         }
         private static Vehicle SetCarFromInput(Car input) {
             SetVehicleColorFromInput(input);
-            Console.WriteLine("Is the Car electric? (True/False)");
+            Console.WriteLine("Är det en Elbil? (True/False) Följt av ENTER");
             input.IsElectric = InputModule.GetBool();
             return input;
         }
@@ -47,22 +53,22 @@ namespace ParkingDeluxe.UserInterface {
             return input;
         }
         private static void PrintMenuOptions() {
-            Console.WriteLine("Choose an action");
+            Console.WriteLine("Välj funktion");
             Console.WriteLine("====");
-            Console.WriteLine("P: Park a vehicle");
-            Console.WriteLine("U: Unpark a vehicle");
-            Console.WriteLine("A: Toggle vehicle input mode");
-            Console.WriteLine("Q: Quit");
+            Console.WriteLine("P: Parkera ett fordon");
+            Console.WriteLine("U: Checka ut ett fordon från parkeringen");
+            Console.WriteLine("A: Växla inmatningsläge för fordon (manuellt, automatiskt)");
+            Console.WriteLine("Q: Avsluta");
         }
         private static void PrintColorOptions() {
-            Console.WriteLine("ColorOptions");
+            Console.WriteLine("Välj färg på fordonet");
             Console.WriteLine("====");
             for (int option = 0; option < Vehicle.s_colors.Length; option++) {
                 Console.WriteLine($"{option}: {Vehicle.s_colors[option]}");
             }
         }
         private static void PrintBrandOptions() {
-            Console.WriteLine("BrandOptions");
+            Console.WriteLine("Välj tillverkare");
             Console.WriteLine("====");
             for (int option = 0; option < Motorcycle.s_brands.Length; option++) {
                 Console.WriteLine($"{option}: {Motorcycle.s_brands[option]}");
@@ -76,15 +82,14 @@ namespace ParkingDeluxe.UserInterface {
             MessageDelay();
         }
         internal static void PrintUnParkingInfo(Vehicle vehicle, double cost) {
-            Console.WriteLine($"{vehicle.LicenseNumber} is no longer parked, the cost of said parking was {cost} kr");
+            Console.WriteLine($"{vehicle.LicenseNumber} har lämnat parkeringen, kostnaden för parkeringen var {cost} kr");
             MessageDelay();
         }
         internal static void ShowUnparkingInstructions() {
-            Console.WriteLine($"Active Choice: Unpark a Vehicle");
-            Console.WriteLine($"Give a licensenumber (format XXXNNN)");
+            Console.WriteLine($"Ange registreringsnummer (format ABC123) för att checka ut ett fordon");
         }
-        internal static void PrintParkingInfo(Vehicle vehicle) {
-            Console.WriteLine($"{vehicle.GetType().Name} arrives to the deluxe parking");
+        internal static void NotifyNewArrival(Vehicle vehicle) {
+            Console.WriteLine($"{vehicle.LicenseNumber} ({vehicle.GetType().Name}) anlände till parkeringen för att parkeras");
             MessageDelay();
         }
     }

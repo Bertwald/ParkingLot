@@ -1,5 +1,5 @@
 ﻿namespace ParkingDeluxe.Interfaces {
-    internal interface IPlaceable {
+    internal interface IMeasurable {
         internal int Size { get; }
     }
 }

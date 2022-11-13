@@ -1,5 +1,6 @@
 ﻿using ParkingDeluxe.UserInterface;
 using ParkingDeluxe.Vehicles;
+using System.Drawing;
 
 namespace ParkingDeluxe.Logic {
     internal enum InputMode {
@@ -17,56 +18,51 @@ namespace ParkingDeluxe.Logic {
     internal class ParkingGarage {
         private static readonly double s_parkingFee = 1.50D;
         private static readonly bool s_spaceBasedFee = false;
+        private static readonly int s_scalingFactor = 2;
         private readonly int _numberOfSpaces;
-        private readonly bool[] _occupiedSpaces;
+        private readonly bool[] _isOccupied;
         private readonly Dictionary<Vehicle, int> _parkedVehicles;
         private readonly ParkingQueue _queue;
         private InputMode _inputMode;
 
         internal ParkingGarage(int slots, ParkingQueue queue) {
-            _numberOfSpaces = slots;
-            _occupiedSpaces = new bool[_numberOfSpaces * 2];
+            _numberOfSpaces = slots * s_scalingFactor;
+            _isOccupied = new bool[_numberOfSpaces];
             _parkedVehicles = new Dictionary<Vehicle, int>();
             _queue = queue;
             _inputMode = InputMode.Manual;
         }
-        internal bool Park(Vehicle vehicle) {
+        private bool ParkVehicle(Vehicle vehicle) {
             //Due to parking layout we cannot park the bus at all consequent spaces, and even if we could that would result in non optimal bus placement
             //The number of spaces need to be an even number for "optimal behavior"
-            for (int parkingNumber = 0; parkingNumber < _occupiedSpaces.Length; parkingNumber += vehicle.Size) {
-                if (IsSpaceFree(parkingNumber) && CanVehicleFit(parkingNumber, vehicle.Size)) {
-                    if (IsNeededSpaceUnoccupied(parkingNumber, vehicle.Size)) {
+            for (int parkingNumber = 0; parkingNumber < _isOccupied.Length; parkingNumber += vehicle.Size) {
+                if (IsWithinParking(parkingNumber, vehicle.Size) && CanVehicleFit(parkingNumber, vehicle.Size)) {
                         _parkedVehicles.Add(vehicle, parkingNumber);
-                        vehicle.StartPark();
-                        vehicle.ParkingInterval = GetParkingInterval(vehicle.Size, parkingNumber);
+                        vehicle.StartParkingTimer();
+                        vehicle.ParkedInInterval = GetParkingInterval(vehicle.Size, parkingNumber);
                         SetVehicleOccupation(vehicle, true);
                         return true;
-                    }
                 }
             }
             return false;
         }
 
-        private bool IsNeededSpaceUnoccupied(int parkingNumber, int size) {
-            for (int j = 1; j < size; j++) {
-                if (_occupiedSpaces[parkingNumber + j] == true) {
+        private bool CanVehicleFit(int parkingNumber, int size) {
+            for (int j = 0; j < size; j++) {
+                if (_isOccupied[parkingNumber + j]) {
                     return false;
                 }
             }
             return true;
         }
-
-        private bool IsSpaceFree(int parkingNumber) {
-            return !_occupiedSpaces[parkingNumber];
+        private bool IsWithinParking(int parkingNumber, int size) {
+            return parkingNumber + size <= _isOccupied.Length;
         }
-        private bool CanVehicleFit(int parkingNumber, int size) {
-            return parkingNumber + size <= _occupiedSpaces.Length;
-        }
-        private string GetParkingInterval(int vehicleSize, int parkingNumber) {
+        private static string GetParkingInterval(int vehicleSize, int parkingNumber) {
             return vehicleSize <= 2 ? (parkingNumber >> 1).ToString() :
                                       (parkingNumber >> 1) + "-" + (parkingNumber + vehicleSize - 1 >> 1).ToString();
         }
-        internal void UnPark(Vehicle vehicle) {
+        internal void UnparkVehicle(Vehicle vehicle) {
             SetVehicleOccupation(vehicle, false);
             RemoveVehicleFromDatabase(vehicle);
             double fee = GetParkingFee(vehicle);
@@ -76,7 +72,7 @@ namespace ParkingDeluxe.Logic {
         private void SetVehicleOccupation(Vehicle vehicle, bool occupation) {
             int startindex = _parkedVehicles[vehicle];
             for (int i = 0; i < vehicle.Size; i++) {
-                _occupiedSpaces[startindex + i] = occupation;
+                _isOccupied[startindex + i] = occupation;
             }
         }
         private void RemoveVehicleFromDatabase(Vehicle vehicle) {
@@ -88,14 +84,14 @@ namespace ParkingDeluxe.Logic {
             }
         }
         private static double GetParkingFee(Vehicle vehicle) {
-            return s_spaceBasedFee ? vehicle.GetParkedTime() * s_parkingFee * vehicle.Size / 2 :
-                                    vehicle.GetParkedTime() * s_parkingFee;
+            return s_spaceBasedFee ? vehicle.GetParkedTimeInMinutes() * s_parkingFee * vehicle.Size / 2 :
+                                     vehicle.GetParkedTimeInMinutes() * s_parkingFee;
         }
 
         internal void ListParkedCars() {
-            var vehicles = from data in _parkedVehicles
-                           orderby data.Value
-                           select data.Key;
+            var vehicles = from vehicle in _parkedVehicles
+                           orderby vehicle.Value
+                           select vehicle.Key;
             UI.PrintParking<Vehicle>(vehicles);
         }
 
@@ -104,7 +100,10 @@ namespace ParkingDeluxe.Logic {
             do {
                 Console.Clear();
                 ListParkedCars();
-                UI.ShowMenu();
+                if (IsParkingFull()) {
+                    UI.FullParkingNotification(_parkedVehicles.Count);
+                }
+                UI.ShowMenu(_parkedVehicles.Count + 2);
                 PrintInputMode();
                 Command command = InputModule.GetCommand();
                 continueRunning = ProcessCommand(command);
@@ -112,7 +111,7 @@ namespace ParkingDeluxe.Logic {
         }
 
         private void PrintInputMode() {
-            Console.WriteLine("Active InputMode : " + _inputMode);
+            Console.WriteLine("Aktivt inmatningsläge : " + _inputMode + Environment.NewLine);
         }
 
         private bool ProcessCommand(Command command) => command switch {
@@ -128,6 +127,14 @@ namespace ParkingDeluxe.Logic {
             _inputMode = (InputMode)((int)(_inputMode + 1) % (int)InputMode.MAX);
             return true;
         }
+        private bool IsParkingFull() {
+            for (int j = 0; j < _numberOfSpaces; j++) {
+                if (!_isOccupied[j]) {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         private bool InitiateUnparkingProcess() {
             UI.ShowUnparkingInstructions();
@@ -140,7 +147,7 @@ namespace ParkingDeluxe.Logic {
                 return true;
             } else {
                 var vehicle = vehicles.First();
-                UnPark(vehicles.First());
+                UnparkVehicle(vehicles.First());
                 return true;
             }
         }
@@ -151,11 +158,11 @@ namespace ParkingDeluxe.Logic {
                 UI.PrintParkingError("The queue returned null", true);
                 return true;
             }
-            UI.PrintParkingInfo(vehicle);
+            UI.NotifyNewArrival(vehicle);
             if (_inputMode == InputMode.Manual) {
                 vehicle = UI.SetVehicleFromInput(vehicle);
             }
-            couldParkCar = Park(vehicle);
+            couldParkCar = ParkVehicle(vehicle);
             if (!couldParkCar) {
                 UI.PrintParkingError($"The {vehicle.GetType().Name} could not fit", true);
             }

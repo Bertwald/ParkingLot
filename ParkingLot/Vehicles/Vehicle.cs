@@ -6,19 +6,19 @@ namespace ParkingDeluxe.Vehicles {
         internal static readonly string[] s_colors = { "Röd", "Svart", "Gul", "Blå", "Vit", "Grå", "Grön", "Rosa" };
         // Used by all Randomfunctions in all subclasses
         protected static Random s_random = new();
-        public string LicenseNumber { get; }
+        internal string LicenseNumber { get; }
         internal string Color { get; set; }
         public int Size { get; protected set; }
-        public DateTime ParkingTime { get; protected set; }
-        public string ParkingInterval { get; set; }
+        public DateTime TimeOfParking { get; protected set; }
+        public string ParkedInInterval { get; set; }
 
         protected Vehicle(string parkingInteval) {
-            ParkingInterval = parkingInteval;
+            ParkedInInterval = parkingInteval;
             Color = GenerateColor();
             LicenseNumber = GenerateLicenseNumer();
         }
         internal Vehicle() {
-            ParkingInterval = "Unparked";
+            ParkedInInterval = "Unparked";
             Color = GenerateColor();
             LicenseNumber = GenerateLicenseNumer();
         }
@@ -30,12 +30,12 @@ namespace ParkingDeluxe.Vehicles {
             return s_colors[s_random.Next(s_colors.Length)];
         }
 
-        public void StartPark() {
-            ParkingTime = DateTime.Now;
+        public void StartParkingTimer() {
+            TimeOfParking = DateTime.Now;
         }
-        public int GetParkedTime() {
+        public int GetParkedTimeInMinutes() {
             //The difference in time as minutes rounded up
-            return ((int)(DateTime.Now.Subtract(ParkingTime)).TotalMinutes) + 1;
+            return ((int)(DateTime.Now.Subtract(TimeOfParking)).TotalMinutes) + 1;
         }
     }
 }

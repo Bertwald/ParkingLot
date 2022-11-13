@@ -1,9 +1,9 @@
 ﻿namespace ParkingDeluxe.Interfaces {
-    internal interface IParkable : IPlaceable {
-        internal DateTime ParkingTime { get; }
-        internal string ParkingInterval { get; }
-        internal void StartPark();
-        internal int GetParkedTime();
+    internal interface IParkable : IMeasurable {
+        internal DateTime TimeOfParking { get; }
+        internal string ParkedInInterval { get; }
+        internal void StartParkingTimer();
+        internal int GetParkedTimeInMinutes();
 
     }
 }

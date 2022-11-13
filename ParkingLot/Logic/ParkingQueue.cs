@@ -17,23 +17,20 @@ namespace ParkingDeluxe.Logic {
                 _vehicleQueue.Enqueue(GetRandomVehicle(s_random.Next()));
             }
         }
-
         internal void Enqueue(Vehicle vehicle) {
             _vehicleQueue.Enqueue(vehicle);
         }
-
         internal Vehicle Dequeue() {
             if (_vehicleQueue.Count <= s_targetLength) {
                 _vehicleQueue.Enqueue(GetRandomVehicle(s_random.Next()));
             }
             return _vehicleQueue.Dequeue();
         }
-
         private static Vehicle GetRandomVehicle(int rand) => (rand % 3) switch {
             0 => new Car(),
             1 => new Bus(),
             2 => new Motorcycle(),
-            _ => new Car(),
+            _ => new Bus(),
         };
     }
 }
